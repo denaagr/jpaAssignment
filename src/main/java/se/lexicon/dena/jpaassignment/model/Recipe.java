@@ -1,7 +1,5 @@
 package se.lexicon.dena.jpaassignment.model;
 
-import org.hibernate.annotations.GenericGenerator;
-
 import javax.persistence.*;
 import java.util.List;
 @Entity
@@ -22,22 +20,25 @@ public class Recipe {
 
     @ManyToMany(cascade = {CascadeType.PERSIST,CascadeType.MERGE,CascadeType.DETACH,CascadeType.REFRESH},fetch = FetchType.LAZY)
     @JoinTable(name="recipe_recipe_recipeCategory",joinColumns = @JoinColumn(name="recipe_id"),inverseJoinColumns = @JoinColumn(name = "category_id"))
-    private List<RecipeCategory> category;
+    private List<RecipeCategory> categories;
 
     //Convenience Method
     public void addRecipeCategory(RecipeCategory recipeCategory){
-        category.add(recipeCategory);
+        categories.add(recipeCategory);
         recipeCategory.getRecipes().add(this);
     }
     //Convenience Method
     public void removeRecipeCategory(RecipeCategory recipeCategory){
-       category.remove(recipeCategory);
+       categories.remove(recipeCategory);
        recipeCategory.getRecipes().remove(this);
     }
 
     public Recipe() {
     }
 
+    public Recipe(String recipeName) {
+        this.recipeName = recipeName;
+    }
 
     public int getRecipeId() {
         return recipeId;
@@ -63,11 +64,11 @@ public class Recipe {
         this.instruction = instruction;
     }
 
-    public List<RecipeCategory> getCategory() {
-        return category;
+    public List<RecipeCategory> getCategories() {
+        return categories;
     }
 
-    public void setCategory(List<RecipeCategory> category) {
-        this.category = category;
+    public void setCategories(List<RecipeCategory> category) {
+        this.categories = category;
     }
 }
